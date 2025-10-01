@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class TaskService {
+
     private final List<Task> tasks = new ArrayList<>();
     private long idCounter = 1;
 
@@ -20,23 +21,35 @@ public class TaskService {
         tasks.add(task);
     }
 
+    //sorteer per id
     public Task getTaskById(Long id) {
-        return tasks.stream()
-                .filter(t -> t.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        for (Task t : tasks) {
+            if (t.getId().equals(id)) {
+                return t;
+            }
+        }
+        return null;
     }
 
+
+    //updating task
     public void updateTask(Task updatedTask) {
-        Task existing = getTaskById(updatedTask.getId());
-        if (existing != null) {
-            existing.setName(updatedTask.getName());
-            existing.setDeadlineDate(updatedTask.getDeadlineDate());
-            existing.setCompleted(updatedTask.isCompleted());
+        for (Task t : tasks) {
+            if (t.getId().equals(updatedTask.getId())) {
+                t.setName(updatedTask.getName());
+                t.setDescription(updatedTask.getDescription());
+                t.setDeadlineDate(updatedTask.getDeadlineDate());
+                t.setCompleted(updatedTask.isCompleted());
+                break;
+            }
         }
     }
 
+
+    //deleting task
     public void deleteTask(Long id) {
         tasks.removeIf(t -> t.getId().equals(id));
     }
+
+
 }

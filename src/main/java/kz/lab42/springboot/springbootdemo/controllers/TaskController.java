@@ -2,14 +2,16 @@ package kz.lab42.springboot.springbootdemo.controllers;
 
 import kz.lab42.springboot.springbootdemo.services.TaskService;
 import kz.lab42.springboot.springbootdemo.models.Task;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class TaskController {
-    private final TaskService taskService;
 
+    private final TaskService taskService;
+    @Autowired
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
@@ -29,6 +31,7 @@ public class TaskController {
     }
 
 
+
     @PostMapping("/add")
     public String addTask(
             @RequestParam String name,
@@ -39,7 +42,7 @@ public class TaskController {
         newTask.setName(name);
         newTask.setDescription(description);
         newTask.setDeadlineDate(deadlineDate);
-        newTask.setCompleted(false); // default
+        newTask.setCompleted(false);
         taskService.addTask(newTask);
 
         return "redirect:/";
@@ -64,13 +67,14 @@ public class TaskController {
 
         Task updated = new Task(id, name, description, deadlineDate, isCompleted);
         taskService.updateTask(updated);
-        return "redirect:/details/" + id;
+        return "redirect:/";
     }
 
     // Delete
-    @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public String deleteTask(@RequestParam Long id) {
         taskService.deleteTask(id);
         return "redirect:/";
     }
+
 }

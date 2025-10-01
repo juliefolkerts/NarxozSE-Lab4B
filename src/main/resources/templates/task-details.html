@@ -11,7 +11,7 @@
 
     <h2>Task Details</h2>
 
-    <form method="post" action="/edit" class="card p-4 shadow-sm">
+    <form th:action="@{/edit}" method="post" class="card p-4 shadow-sm">
         <input type="hidden" name="id" th:value="${task.id}">
 
         <div class="mb-3">
@@ -36,9 +36,15 @@
         </div>
 
         <button type="submit" class="btn btn-success">Save</button>
-        <a th:href="@{'/delete/' + ${task.id}}" class="btn btn-danger">Delete</a>
-        <a href="/" class="btn btn-secondary">Back</a>
+
+
     </form>
+    <form th:action="@{/delete}" method="post" class="d-inline">
+        <input type="hidden" name="id" th:value="${task.id}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+
+    <a href="/" class="btn btn-secondary">Back</a>
 
 </div>
 </body>
